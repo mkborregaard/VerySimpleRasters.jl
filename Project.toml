@@ -1,0 +1,16 @@
+name = "VerySimpleRasters"
+uuid = "15e4465c-140a-11e9-1a09-6f7eeac38b3b"
+authors = ["Michael Krabbe Borregaard <mkborregaard@snm.ku.dk>"]
+version = "0.1.0"
+
+[deps]
+HDF5 = "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
+
+[compat]
+julia = "1.1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
