@@ -1,13 +1,17 @@
-struct VerySimpleRaster
-    mat::Matrix{Union{Missing, Float64}}
-    xs::StepRangeLen{Float64}
-    ys::StepRangeLen{Float64}
+struct VerySimpleRaster{T}
+    mat::Matrix{T}
+    nodata::T
+    xs::StepRangeLen{Float32}
+    ys::StepRangeLen{Float32}
+    proj::String
 end
 
-VerySimpleRaster(mat, xll, yll, cell) =
-    VerySimpleRaster(mat, StepRangeLen(xll, cell, size(mat,2)), StepRangeLen(yll, cell, size(mat,1)))
+VerySimpleRaster(mat::AbstractMatrix{T}, nodata, xll, yll, cellx, celly = cellx, proj = "") where T =
+    VerySimpleRaster{T}(mat, convert(T, nodata), range(xll, step = cellx, length = size(mat,1)), range(yll, step = celly, length = size(mat,2)), proj)
 
-Base.show(io::IO, vsr::VerySimpleRaster) = println(io,
+Base.show(io::IO, vsr::VerySimpleRaster{T}) where T = println(io,
 """
-VerySimpleRaster{Float64} with $(length(vsr.ys)) rows and $(length(vsr.xs)) columns
-Extent: $(round(first(vsr.xs), sigdigits = 6)) to $(round(last(vsr.xs), sigdigits = 6)) longitude, $(round(first(vsr.ys), sigdigits = 6)) to $(round(last(vsr.ys), sigdigits = 6)) latitude""")
+VerySimpleRaster{$T} with $(length(vsr.ys)) rows and $(length(vsr.xs)) columns
+Resolution: $(round(vsr.xs.step, sigdigits = 5)), $(round(vsr.ys.step, sigdigits = 5))
+Extent: $(round(first(vsr.xs), sigdigits = 5)) to $(round(last(vsr.xs), sigdigits = 5)) longitude, $(round(first(vsr.ys), sigdigits = 5)) to $(round(last(vsr.ys), sigdigits = 5)) latitude
+Projection: \"$(vsr.proj)\" """)
