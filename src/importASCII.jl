@@ -12,5 +12,5 @@ function importASCII(x::AbstractString)
         ret[row,:] .= parse.(Float64, split(readline(file), " "))
     end
     close(file)
-    VerySimpleRaster(ret, xll, yll, cell, NA)
+    VerySimpleRaster(ret, xll, yll, cell, cell, NA, "", "")
 end

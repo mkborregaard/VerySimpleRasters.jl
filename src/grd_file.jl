@@ -21,14 +21,15 @@ function VerySimpleRaster(grdfile::String)
     ncols = parse(Int, data["nrows"])
     nrows = parse(Int, data["ncols"])
     dt = datatype_translation[data["datatype"]]
-    mat = open(fname*".gri", "r") do IO
+    fname = abspath(fname*".gri")
+    mat = open(fname, "r") do IO
         Mmap.mmap(IO, Matrix{dt}, (nrows, ncols))
     end
     xmin, xmax = parse(Float64, data["xmin"]), parse(Float64, data["xmax"])
     ymin, ymax = parse(Float64, data["ymin"]), parse(Float64, data["ymax"])
     celly = (ymax - ymin) / ncols
     cellx = (xmax - xmin) / nrows
-    VerySimpleRaster(mat', parse(dt, data["nodatavalue"]), xmin, ymin, cellx, celly, data["projection"])
+    VerySimpleRaster(mat, parse(dt, data["nodatavalue"]), xmin, ymin, cellx, celly, data["projection"], fname)
 end
 
 datatype_translation = Dict{String, DataType}(
