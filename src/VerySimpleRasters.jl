@@ -2,6 +2,7 @@ module VerySimpleRasters
 
 using HDF5
 using RecipesBase
+using Mmap
 
 include("datatypes.jl")
 include("importASCII.jl")
