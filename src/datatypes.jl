@@ -1,8 +1,8 @@
 struct VerySimpleRaster{T}
     mat::Matrix{T}
     nodata::T
-    xs::StepRangeLen{Float32}
-    ys::StepRangeLen{Float32}
+    xs::StepRangeLen{Float64}
+    ys::StepRangeLen{Float64}
     proj::String
     filename::String
 end
@@ -13,7 +13,7 @@ VerySimpleRaster(mat::AbstractMatrix{T}, nodata, xll, yll, cellx, celly = cellx,
 Base.show(io::IO, vsr::VerySimpleRaster{T}) where T = println(io,
 """
 VerySimpleRaster{$T} with $(length(vsr.ys)) rows and $(length(vsr.xs)) columns
-Resolution: $(round(vsr.xs.step, sigdigits = 5)), $(round(vsr.ys.step, sigdigits = 5))
+Resolution: $(round(step(vsr.xs), sigdigits = 5)), $(round(step(vsr.ys), sigdigits = 5))
 Extent: $(round(first(vsr.xs), sigdigits = 5)) to $(round(last(vsr.xs), sigdigits = 5)) longitude, $(round(first(vsr.ys), sigdigits = 5)) to $(round(last(vsr.ys), sigdigits = 5)) latitude
-Projection: \"$(vsr.proj)\" """)
+Projection: $(vsr.proj)
 Source file: $(vsr.filename)""")
