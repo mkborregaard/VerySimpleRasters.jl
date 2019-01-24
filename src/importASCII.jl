@@ -7,12 +7,10 @@ function importASCII(x::AbstractString)
     yll = parse(Float64, match(r"YLLCORNER (.+)", readline(file)).captures[1])
     cell = parse(Float64, match(r"CELLSIZE (.+)", readline(file)).captures[1])
     NA = parse(Float64, match(r"NODATA_value (.+)", readline(file)).captures[1])
-    ret = Matrix{Union{Missing, Float64}}(undef, nr, nc)
-    tmp = Vector{Float64}(undef, nc)
+    ret = Matrix{Float64}(undef, nr, nc)
     for row in nr:-1:1
-        tmp .= parse.(Float64, split(readline(file), " "))
-        ret[row,:] .= replace(tmp, NA=>missing)
+        ret[row,:] .= parse.(Float64, split(readline(file), " "))
     end
     close(file)
-    VerySimpleRaster(ret, xll, yll, cell)
+    VerySimpleRaster(ret, xll, yll, cell, NA)
 end
