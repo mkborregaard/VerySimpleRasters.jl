@@ -1,0 +1,27 @@
+[general] 
+creator=R package 'raster' 
+created= 2013-09-15 13:04:50 
+[georeference] 
+nrows= 127 
+ncols= 167 
+xmin= -17.4022222223333 
+ymin= 27.962361111 
+xmax= -17.0543055556667 
+ymax= 28.2269444443333 
+projection= +proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs 
+[data] 
+datatype= FLT4S 
+byteorder= little 
+nbands= 1 
+bandorder= BIL 
+categorical= FALSE 
+minvalue= 0 
+maxvalue= 1452 
+nodatavalue= -3.4e+38 
+[legend] 
+legendtype=  
+values=  
+color=  
+[description] 
+layername= mn75_grd 
+history=  
