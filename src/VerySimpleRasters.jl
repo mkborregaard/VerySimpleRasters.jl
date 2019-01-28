@@ -3,6 +3,7 @@ module VerySimpleRasters
 using HDF5
 using RecipesBase
 using Mmap
+using Dates
 
 import Base.getindex
 
@@ -14,4 +15,5 @@ include("plotrecipes.jl")
 
 export VerySimpleRaster, importASCII
 export extract, aggregate
+export writeraster
 end # module

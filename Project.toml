@@ -4,6 +4,7 @@ authors = ["Michael Krabbe Borregaard <mkborregaard@snm.ku.dk>"]
 version = "0.1.0"
 
 [deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 HDF5 = "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
 Mmap = "a63ad114-7e13-5084-954f-fe012c677804"
 RecipesBase = "3cdcf5f2-1ef4-517c-9805-6587b60abb01"
