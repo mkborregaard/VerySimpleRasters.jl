@@ -13,7 +13,7 @@ include("grd_file.jl")
 include("operations.jl")
 include("plotrecipes.jl")
 
-export VerySimpleRaster, importASCII
-export extract, aggregate
+export VerySimpleRaster, importASCII, write_grd
+export extract, aggregate, crop, mask
 export writeraster
 end # module
