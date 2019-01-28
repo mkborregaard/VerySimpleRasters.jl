@@ -1,5 +1,5 @@
 
-function importASCII(x::AbstractString)
+function importASCII(x::AbstractString, outfile = "")
     file = open(x, "r")
     nc = parse(Int, match(r"NCOLS (.+)", readline(file)).captures[1])
     nr = parse(Int, match(r"NROWS (.+)", readline(file)).captures[1])
@@ -7,10 +7,22 @@ function importASCII(x::AbstractString)
     yll = parse(Float64, match(r"YLLCORNER (.+)", readline(file)).captures[1])
     cell = parse(Float64, match(r"CELLSIZE (.+)", readline(file)).captures[1])
     NA = parse(Float64, match(r"NODATA_value (.+)", readline(file)).captures[1])
-    ret = Matrix{Float64}(undef, nr, nc)
+    tmp = Vector{Float64}(undef, nc)
+
+    outfile == "" && (outfile = tempname())
+    outfile[end-3:end] ∈ (".gri", "grd") && (outfile = outfile[1:end-4])
+    IO = open(outfile*".gri", "w")
+
     for row in nr:-1:1
-        ret[row,:] .= parse.(Float64, split(readline(file), " "))
+        tmp .= parse.(Float64, split(readline(file), " "))
+        for r in tmp
+            write(IO, r)
+        end
     end
     close(file)
-    VerySimpleRaster(ret, xll, yll, cell, cell, NA, "", "")
+    close(IO)
+    mat = Mmap.mmap(outfile*".gri", Matrix{Float64}, (nc, nr))
+    vsr = VerySimpleRaster(mat, NA, xll, yll, cell, cell, "", outfile*".gri")
+    write_grd_header(outfile*".grd", vsr)
+    vsr
 end
