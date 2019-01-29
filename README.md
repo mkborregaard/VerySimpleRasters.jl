@@ -9,7 +9,7 @@ Currently available functions are:
 #### For loading and writing files
 - `VerySimpleRaster(filename)` loads an R .grd file
 - `importASCII(filename)` imports an ESRI Ascii grid to a .grd file and opens it
-- `writeraster(raster, filename)` writes the raster as a .grd file
+- `writeraster(filename, raster)` writes the raster as a .grd file
 
 #### Raster operations
 - `crop(raster, window [, filename])` crops the raster to a window
