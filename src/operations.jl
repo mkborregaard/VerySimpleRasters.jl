@@ -117,7 +117,7 @@ extract(vsr::VerySimpleRaster, ar::AbstractVector) = extract.(Ref(vsr), ar)
 midpoints(a::AbstractVector) = [mean(a[i-1:i]) for i in eachindex(a)[2:end]]
 const Pt{T<:Real} = Tuple{T, T}
 
-function isinside(r::Pt, poly::AbstractVector{<:Pt})
+function isinside(r::Pt, poly::AbstractVector)
     # An implementation of Hormann-Agathos (2001) Point in Polygon algorithm
     # See: http://www.sciencedirect.com/science/article/pii/S0925772101000128
     # Code segment adapted from PolygonClipping.jl
@@ -162,7 +162,7 @@ end
 Masks the raster by a polygon. Creates a new raster where points falling outside
 the polygon have been replaced by `missing`
 """
-function mask(vsr::VerySimpleRaster{T}, poly::AbstractVector{<:Pt}, file = "") where T
+function mask(vsr::VerySimpleRaster{T}, poly::AbstractVector, file = "") where T
    file == "" && (file = tempname())
    file[end-3:end] ∈ (".gri", "grd") && (file = file[1:end-4])
    open(file*".gri", "w") do IO
