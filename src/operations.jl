@@ -1,6 +1,14 @@
 #----------------------------------------
 # aggregate
 
+"""
+    aggregate(vsr::VerySimpleRaster, factor::Int, fun::Function [, file])
+
+Aggregates the raster by merging `factor` cells in both directions, using the
+aggregation function `fun`. Return value is a new raster. Also supports the
+`do` block syntax. Use the optional `file` argument to keep the resulting raster
+file in your work directory.
+"""
 aggregate(fun::Function, vsr, factor, file = "") = aggregate(vsr, factor, fun, file)
 
 function aggregate(vsr::VerySimpleRaster, factor::Int, fun::Function, file = "")
@@ -56,6 +64,13 @@ function cell_to_coords(vsr, x, y)
    vsr.xs[x]+step(vsr.xs), vsr.ys[length(vsr.ys)-y+1]
 end
 
+"""
+    crop(vsr::VerySimpleRaster{T}, xmin, xmax, ymin, ymax [, file])
+    crop(vsr::VerySimpleRaster{T}, extent [, file])
+
+Crops the raster to a rectangular window. Returns a new raster, use the
+`file` argument to keep this in your working directory.
+"""
 crop(vsr, inds, file = "") = crop(vsr, inds..., file)
 function crop(vsr::VerySimpleRaster{T}, xmin, xmax, ymin, ymax, file = "") where T
    x1,y1 = coord_to_cell(vsr, xmin, ymax)
@@ -76,6 +91,12 @@ end
 #------------------------------------------
 # extract
 
+"""
+   extract(vsr::VerySimpleRaster, x, y)
+   extract(vsr::VerySimpleRaster, points)
+
+Extracts the value of the raster at the given points.
+"""
 extract(vsr::VerySimpleRaster, x, y) = extract(vsr, (x, y))
 function extract(vsr::VerySimpleRaster, tup)
    x, y = tup[1], tup[2]
@@ -135,6 +156,12 @@ function isinside(r::Pt, poly::AbstractVector{<:Pt})
     return c
 end
 
+"""
+    mask(raster, polygon [, filename])`
+
+Masks the raster by a polygon. Creates a new raster where points falling outside
+the polygon have been replaced by `missing`
+"""
 function mask(vsr::VerySimpleRaster{T}, poly::AbstractVector{<:Pt}, file = "") where T
    file == "" && (file = tempname())
    file[end-3:end] ∈ (".gri", "grd") && (file = file[1:end-4])

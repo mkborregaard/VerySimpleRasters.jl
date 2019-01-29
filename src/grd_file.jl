@@ -95,6 +95,12 @@ const datatype_translation = Dict{String, DataType}(
 
 const rev_datatype_translation = Dict{DataType, String}(v => k for (k,v) in datatype_translation)
 
+"""
+    writeraster(file::String, vsr::VerySimpleRaster)
+
+Writes the raster as an R .grd file. Under the hood simply copies the temporary
+on-disk version of the raster to `file`.
+"""
 function writeraster(fname::String, vsr::VerySimpleRaster)
     fname[end-3:end] ∈ (".gri", "grd") && (fname = fname[1:end-4])
     cp(vsr.filename, fname*".gri")

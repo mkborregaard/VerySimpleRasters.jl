@@ -1,4 +1,9 @@
+"""
+    importASCII(file::AbstractString [, outfile])
 
+Imports an ESRI Ascii grid to a .grd file and returns a new VerySimpleRaster
+object. Specify `outfile` to keep the newly created file.
+"""
 function importASCII(x::AbstractString, outfile = "")
     file = open(x, "r")
     nc = parse(Int, match(r"NCOLS (.+)", readline(file)).captures[1])
