@@ -101,8 +101,9 @@ const rev_datatype_translation = Dict{DataType, String}(v => k for (k,v) in data
 Writes the raster as an R .grd file. Under the hood simply copies the temporary
 on-disk version of the raster to `file`.
 """
-function writeraster(fname::String, vsr::VerySimpleRaster)
-    fname[end-3:end] ∈ (".gri", "grd") && (fname = fname[1:end-4])
-    cp(vsr.filename, fname*".gri")
-    cp(vsr.filename[end-3:end]*".grd", fname*".grd")
+function writeraster(fname::String, vsr::VerySimpleRaster; force = false)
+    fname[end-4:end] ∈ (".gri", ".grd") && (fname = fname[1:end-4])
+    Mmap.sync!(vsr.mat)
+    cp(vsr.filename, fname*".gri", force = force)
+    cp(vsr.filename[1:end-4]*".grd", fname*".grd", force = force)
 end
