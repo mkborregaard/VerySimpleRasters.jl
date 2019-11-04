@@ -52,14 +52,16 @@ end
 
 #-------------------------------------------
 # crop
-function coord_to_cell(vsr, x, y)
+coordinate_to_index(vsr, x) = coordinate_to_index(vsr, x...)
+function coordinate_to_index(vsr, x, y)
    bb = bbox(vsr)
    (x < bb.xmin || x > bb.xmax || y < bb.ymin || y > bb.ymax) && (throw(BoundsError()))
    indx, indy = findfirst(i-> i>x, vsr.xs), findfirst(i-> i>y, vsr.ys)
    indx - 1, length(vsr.ys) - indy + 1
 end
 
-function cell_to_coords(vsr, x, y)
+index_to_coordinate(vsr, x) = index_to_coordinate(vsr, x...)
+function index_to_coordinate(vsr, x, y)
    (x < 1 || x > size(vsr.mat, 1) || y < 1 || y > size(vsr.mat, 2)) && throw(BoundsError())
    vsr.xs[x]+step(vsr.xs), vsr.ys[length(vsr.ys)-y+1]
 end
@@ -73,8 +75,8 @@ Crops the raster to a rectangular window. Returns a new raster, use the
 """
 crop(vsr, inds, file = "") = crop(vsr, inds..., file)
 function crop(vsr::VerySimpleRaster{T}, xmin, xmax, ymin, ymax, file = "") where T
-   x1,y1 = coord_to_cell(vsr, xmin, ymax)
-   x2,y2 = coord_to_cell(vsr, xmax, ymin)
+   x1,y1 = coordinate_to_index(vsr, xmin, ymax)
+   x2,y2 = coordinate_to_index(vsr, xmax, ymin)
    newsize = (x2-x1, y2-y1)
 
    file == "" && (file = tempname())
@@ -101,7 +103,7 @@ extract(vsr::VerySimpleRaster, x, y) = extract(vsr, (x, y))
 function extract(vsr::VerySimpleRaster, tup)
    x, y = tup[1], tup[2]
    indx, indy = try
-      coord_to_cell(vsr, x, y)
+      coordinate_to_index(vsr, x, y)
    catch
       return missing
    end
@@ -168,7 +170,7 @@ function mask(vsr::VerySimpleRaster{T}, poly::AbstractVector, file = "") where T
    open(file*".gri", "w") do IO
       for j in axes(vsr.mat, 2)
          for i in axes(vsr.mat, 1)
-            if isinside(cell_to_coords(vsr, i, j), poly)
+            if isinside(index_to_coordinate(vsr, i, j), poly)
                write(IO, vsr[i, j])
             else
                write(IO, vsr.nodata)
