@@ -5,7 +5,7 @@ using RecipesBase
 using Mmap
 using Dates
 
-import Base.getindex
+import Base: getindex, setindex!
 
 include("datatypes.jl")
 include("importASCII.jl")

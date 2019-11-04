@@ -50,6 +50,9 @@ function getindex(vsr::VerySimpleRaster, x)
    ret
 end
 
+setindex!(vsr::VerySimpleRaster, x, y, val) = setindex!(vsr.mat, x, y, val)
+setindex!(vsr::VerySimpleRaster, x, val) = setindex!(vsr.mat, x, val)
+
 #-------------------------------------------
 # crop
 coordinate_to_index(vsr, x) = coordinate_to_index(vsr, x...)
