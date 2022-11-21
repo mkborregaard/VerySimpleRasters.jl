@@ -1,6 +1,8 @@
 # VerySimpleRasters.jl
 Very simple raster format for julia
 
+## NOTE: All functionality of this package has been superceded by the Rasters.jl package - I recommend using that package instead
+
 The VerySimpleRasters package allows you to open on-disk rasters as a memory-mapped file, and do simple data curation and abstraction methods on it. It currently uses the native `.grd` format of R's `raster` package and can import ESRI Ascii grids to that format. Further integration with GDAL is planned, which would allow for compatibility with all raster formats.
 
 The VerySimpleRaster type is a simple wrapper around an mmapped `Array` with some metadata. All operations happen on disk, creating temporary on-disk copies. Providing the optional `filename` argument creates the copy permanently at the given path.
